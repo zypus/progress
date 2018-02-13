@@ -79,7 +79,7 @@ And get output like this for free:
 
 ## Installation
 
-To get started simply add it as a dependency via **Jcenter**:
+To get started simply add it as a dependency to the maven repository at (https://dl.bintray.com/zypus/github):
 
 ### Gradle
 
