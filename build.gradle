@@ -1,0 +1,107 @@
+buildscript {
+    ext.kotlin_version = '1.2.21'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.15"
+    }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+group 'com.zypus'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile 'io.kotlintest:kotlintest:2.0.7'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+dokka {
+    outputFormat = "javadoc"
+    outputDirectory = javadoc.destinationDir
+    inputs.dir 'src/main/kotlin'
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: dokka) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "zypus"
+            name "Fabian"
+            email "zypus@t-online.de"
+        }
+    }
+
+    scm {
+        url "https://github.com/zypus/progress"
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            groupId 'com.zypus'
+            artifactId 'progress'
+            version '1.0.0'
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Tiny progress indicator library.')
+                root.appendNode('name', 'Progress')
+                root.appendNode('url', 'https://github.com/zypus/progress')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+Properties properties = new Properties()
+File propFile = "${System.properties['user.home']}${File.separator}.gradle${File.separator}bintray.properties" as File
+properties.load(propFile.newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    publications = ['maven']
+}
