@@ -103,5 +103,17 @@ properties.load(propFile.newDataInputStream())
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
+    pkg {
+        repo = 'github'
+        name = 'progress'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/zypus/progress.git'
+        version {
+            name = '1.0.0'
+            desc = 'Progress 1.0.0'
+            released = new Date()
+            vcsTag = '1.0.0'
+        }
+    }
     publications = ['maven']
 }
