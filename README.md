@@ -1,6 +1,6 @@
 # Progress
 
-[![Bintray](https://img.shields.io/bintray/v/zypus/github/progress.svg)]()
+[ ![Download](https://api.bintray.com/packages/zypus/github/progress/images/download.svg) ](https://bintray.com/zypus/github/progress/_latestVersion)
 [![Apache License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 This tiny library can be used to show some kind of progress indicator while executing some long running task. Especially, while writing small kotlin scripts it is tedious to reinvent a minimal progress indicator. Therefore this library provide an easy yet flexible interface for progress control. Further, in the case of simply printing to a console, a couple of pre-formatted values are at hand to compose a progress statement quickly: Like a progress bar, the elapsed and remaining time etc. (see complete set of features below).
